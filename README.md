@@ -1,4 +1,4 @@
-# svelte-adapter-deno-deploy
+# sveltekit-adapter-deno
 
 [Adapter](https://kit.svelte.dev/docs/adapters) for [SvelteKit](https://kit.svelte.dev/) apps that generates a standalone [Deno](https://deno.com/runtime) or [Deno Deploy](https://deno.com/deploy) server.
 
@@ -7,14 +7,14 @@
 Install in your SvelteKit project:
 
 ```sh
-npm install --save-dev svelte-adapter-deno-deploy
+npm install --save-dev sveltekit-adapter-deno
 ```
 
 Add the adapter to your [SvelteKit configuration](https://kit.svelte.dev/docs/configuration):
 
 ```js
 // svelte.config.js
-import adapter from 'svelte-adapter-deno-deploy';
+import adapter from 'sveltekit-adapter-deno';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
