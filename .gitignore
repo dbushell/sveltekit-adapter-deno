@@ -1,0 +1,12 @@
+/*
+!.gitignore
+!index.d.ts
+!index.js
+!package.json
+!README.md
+!LICENSE
+!files
+files/*
+!files/*.json
+!files/*.js
+!files/*.ts

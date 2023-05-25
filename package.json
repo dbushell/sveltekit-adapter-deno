@@ -1,0 +1,35 @@
+{
+  "name": "svelte-adapter-deno-deploy",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbushell/svelte-adapter-deno-deploy"
+  },
+  "description": "Adapter for SvelteKit apps that generates a standalone Deno or Deno Deploy server",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "files",
+    "index.js",
+    "index.d.ts",
+    "package.json"
+  ],
+  "dependencies": {
+    "esbuild": "^0.17.19"
+  },
+  "devDependencies": {
+    "@sveltejs/kit": "^1.18.0"
+  },
+  "peerDependencies": {
+    "@sveltejs/kit": "^1.0.0"
+  }
+}
