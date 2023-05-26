@@ -25,8 +25,23 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
 
   const {pathname} = new URL(request.url);
 
-  // Try prerendered route without extension
-  if (prerendered.has(pathname) && !path.extname(pathname)) {
+  // Path has trailing slash
+  const slashed = pathname.at(-1) === '/';
+
+  // Handle trailing slash redirects for prerendered routes
+  const location = slashed ? pathname.slice(0, -1) : `${pathname}/`;
+  if (prerendered.has(location)) {
+    return new Response(null, {
+      status: 308,
+      statusText: 'Permanent Redirect',
+      headers: {
+        location
+      }
+    });
+  }
+
+  // Try prerendered route with html extension
+  if (!slashed && !path.extname(pathname) && prerendered.has(pathname)) {
     const response = await serveFile(
       request,
       path.join(rootDir, `${pathname}.html`)
@@ -36,14 +51,9 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
     }
   }
 
-  // Try static files
+  // Try static files (ignore redirects and errors)
   const response = await serveDir(request, serveDirOptions);
-  if (response.status === 301) {
-    // Handle trailing slash redirects
-    if (prerendered.has(`${pathname}/`)) {
-      return response;
-    }
-  } else if (response.status < 400) {
+  if (response.status < 300) {
     if (
       pathname.startsWith(`/${manifest.appDir}/immutable/`) &&
       response.status === 200
