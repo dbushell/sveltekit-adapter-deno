@@ -24,7 +24,7 @@ jobs:
           node-version: 20.x
 
       - name: Build
-        run: npm install && npm run build
+        run: npm install && npx vite build
         working-directory: demo
         env:
           NODE_ENV: production
