@@ -46,14 +46,14 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
       request,
       path.join(rootDir, `${pathname}.html`)
     );
-    if (response.ok) {
+    if (response.ok || response.status === 304) {
       return response;
     }
   }
 
   // Try static files (ignore redirects and errors)
   const response = await serveDir(request, serveDirOptions);
-  if (response.status < 300) {
+  if (response.ok || response.status === 304) {
     if (
       pathname.startsWith(`/${manifest.appDir}/immutable/`) &&
       response.status === 200
