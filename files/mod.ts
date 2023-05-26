@@ -1,10 +1,14 @@
 import type {ConnInfo, Handler} from 'server';
+import * as path from 'path';
 import {serve} from 'server';
 import {serveDir} from 'file_server';
 
 import server from './server.js';
 
 const initialized = server.init({env: Deno.env.toObject()});
+
+const baseDir = path.dirname(new URL(import.meta.url).pathname);
+const rootDir = path.join(baseDir, 'static');
 
 const handler: Handler = async (request: Request, context: ConnInfo) => {
   // Get client IP address
@@ -14,7 +18,7 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
 
   // Try static files
   const response = await serveDir(request, {
-    fsRoot: 'static',
+    fsRoot: rootDir,
     quiet: true
   });
   if (response && (response.ok || response.status < 400)) {
