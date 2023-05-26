@@ -20,16 +20,14 @@ export default function (opts = {}) {
       builder.writeClient(outDir);
       builder.writePrerendered(outDir);
 
-      const dir = denoDeploy === true ? tmp : out;
-
-      builder.writeServer(`${dir}/server`);
+      builder.writeServer(`${out}/server`);
 
       const manifest = builder.generateManifest({
         relativePath: './'
       });
 
       writeFileSync(
-        `${dir}/server/manifest.js`,
+        `${out}/server/manifest.js`,
         `export const manifest = ${manifest};\n\nexport const prerendered = new Set(${JSON.stringify(
           builder.prerendered.paths
         )});\n`
@@ -48,15 +46,16 @@ export default function (opts = {}) {
       const serverPath = fileURLToPath(
         new URL('./files/server.js', import.meta.url).href
       );
-      builder.copy(serverPath, `${dir}/server.js`, {});
+      builder.copy(serverPath, `${out}/server.js`, {});
 
       if (denoDeploy) {
         build({
-          entryPoints: [`${tmp}/server.js`],
+          entryPoints: [`${out}/server.js`],
           outfile: `${out}/server.js`,
           bundle: true,
           format: 'esm',
-          target: 'esnext'
+          target: 'esnext',
+          allowOverwrite: true
         }).catch((err) => {
           console.error(err);
           process.exit(1);
