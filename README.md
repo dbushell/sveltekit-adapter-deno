@@ -40,6 +40,14 @@ deno run --allow-env --allow-read --allow-net build/mod.ts
 
 Or with **Deno Deploy** set the `entrypoint` to `build/mod.ts`.
 
+## Demo App
+
+This repo publishes a SvelteKit demo app to Deno Deploy at:
+
+[sveltekit-adapter-deno.deno.dev](https://sveltekit-adapter-deno.deno.dev/)
+
+See the [GitHub Action workflow](/.github/workflows/ci.yml) for automated deployment.
+
 * * *
 
 [MIT License](/LICENSE) | Copyright © 2023 [David Bushell](https://dbushell.com)
