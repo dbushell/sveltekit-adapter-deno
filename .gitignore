@@ -1,4 +1,5 @@
 /*
+!.github
 !.gitignore
 !index.d.ts
 !index.js
@@ -10,3 +11,4 @@ files/*
 !files/*.json
 !files/*.js
 !files/*.ts
+!demo
