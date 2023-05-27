@@ -32,21 +32,25 @@ export default config;
 
 Build the app for production (`npm run build`).
 
-Serve with **Deno**:
+Serve with Deno:
 
 ```sh
 deno run --allow-env --allow-read --allow-net build/mod.ts
 ```
 
-Or with **Deno Deploy** set the `entrypoint` to `build/mod.ts`.
+For Deno Deploy with [deployctl](https://deno.com/deploy/docs/deployctl) in the build directory:
+
+```
+deployctl deploy --project=demo --import-map=deno.json mod.ts
+```
+
+See the [GitHub Action workflow](/.github/workflows/ci.yml) for automated deployment.
 
 ## Demo App
 
 This repo publishes a SvelteKit demo app to Deno Deploy at:
 
 [sveltekit-adapter-deno.deno.dev](https://sveltekit-adapter-deno.deno.dev/)
-
-See the [GitHub Action workflow](/.github/workflows/ci.yml) for automated deployment.
 
 * * *
 
