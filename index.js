@@ -1,4 +1,3 @@
-import {writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 
@@ -22,21 +21,16 @@ export default function (opts = {}) {
 
       builder.writeServer(`${out}/server`);
 
-      const manifest = builder.generateManifest({
-        relativePath: './'
-      });
-
-      writeFileSync(
-        `${out}/server/manifest.js`,
-        `export const manifest = ${manifest};\n\nexport const prerendered = new Set(${JSON.stringify(
-          builder.prerendered.paths
-        )});\n`
-      );
-
       const modPath = fileURLToPath(
         new URL('./files/mod.ts', import.meta.url).href
       );
-      builder.copy(modPath, `${out}/mod.ts`, {});
+      builder.copy(modPath, `${out}/mod.ts`, {
+        replace: {
+          SERVER: './server.js',
+          APP_DIR: builder.getAppPath(),
+          PRERENDERED: JSON.stringify(builder.prerendered.paths)
+        }
+      });
 
       const denoPath = fileURLToPath(
         new URL('./files/deno.json', import.meta.url).href
@@ -49,17 +43,21 @@ export default function (opts = {}) {
       builder.copy(serverPath, `${out}/server.js`, {});
 
       if (denoDeploy) {
-        build({
-          entryPoints: [`${out}/server.js`],
-          outfile: `${out}/server.js`,
-          bundle: true,
-          format: 'esm',
-          target: 'esnext',
-          allowOverwrite: true
-        }).catch((err) => {
+        try {
+          await build({
+            entryPoints: [`${out}/server.js`],
+            outfile: `${out}/server.js`,
+            bundle: true,
+            format: 'esm',
+            target: 'esnext',
+            allowOverwrite: true
+          });
+        } catch (err) {
           console.error(err);
           process.exit(1);
-        });
+        } finally {
+          builder.rimraf(`${out}/server`);
+        }
       }
     }
   };

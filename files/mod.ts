@@ -1,21 +1,17 @@
 import type {ConnInfo, Handler} from 'server';
-import * as path from 'path';
 import {serve} from 'server';
 import {serveDir, serveFile} from 'file_server';
+import {dirname, extname, join} from 'path';
 
-import {manifest, prerendered} from './server/manifest.js';
-
-import server from './server.js';
+import server from 'SERVER';
 
 const initialized = server.init({env: Deno.env.toObject()});
 
-const baseDir = path.dirname(new URL(import.meta.url).pathname);
-const rootDir = path.join(baseDir, 'static');
+const prerendered: Set<string> = new Set(PRERENDERED);
 
-const serveDirOptions = {
-  fsRoot: rootDir,
-  quiet: true
-};
+const appDir = 'APP_DIR';
+const baseDir = dirname(new URL(import.meta.url).pathname);
+const rootDir = join(baseDir, 'static');
 
 const handler: Handler = async (request: Request, context: ConnInfo) => {
   // Get client IP address
@@ -41,10 +37,10 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
   }
 
   // Try prerendered route with html extension
-  if (!slashed && !path.extname(pathname) && prerendered.has(pathname)) {
+  if (!slashed && !extname(pathname) && prerendered.has(pathname)) {
     const response = await serveFile(
       request,
-      path.join(rootDir, `${pathname}.html`)
+      join(rootDir, `${pathname}.html`)
     );
     if (response.ok || response.status === 304) {
       return response;
@@ -52,10 +48,13 @@ const handler: Handler = async (request: Request, context: ConnInfo) => {
   }
 
   // Try static files (ignore redirects and errors)
-  const response = await serveDir(request, serveDirOptions);
+  const response = await serveDir(request, {
+    fsRoot: rootDir,
+    quiet: true
+  });
   if (response.ok || response.status === 304) {
     if (
-      pathname.startsWith(`/${manifest.appDir}/immutable/`) &&
+      pathname.startsWith(`/${appDir}/immutable/`) &&
       response.status === 200
     ) {
       response.headers.set(

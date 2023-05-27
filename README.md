@@ -10,7 +10,9 @@ Install in your SvelteKit project:
 npm install --save-dev sveltekit-adapter-deno
 ```
 
-Add the adapter to your [SvelteKit configuration](https://kit.svelte.dev/docs/configuration):
+Add the adapter to your [SvelteKit configuration](https://kit.svelte.dev/docs/configuration).
+
+👉 Set `denoDeploy` to `true` if you're deploying to **Deno Deploy**.
 
 ```js
 // svelte.config.js
@@ -27,8 +29,6 @@ const config = {
 
 export default config;
 ```
-
-Set `denoDeploy` to `true` if you will be deploying to Deno Deploy.
 
 Build the app for production (`npm run build`).
 
