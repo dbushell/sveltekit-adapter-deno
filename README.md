@@ -32,19 +32,21 @@ export default config;
 
 Build the app for production (`npm run build`).
 
-Serve with Deno:
+Serve with Deno from the build directory:
 
 ```sh
-deno run --allow-env --allow-read --allow-net build/mod.ts
+deno run --allow-env --allow-read --allow-net mod.ts
 ```
 
-For Deno Deploy with [deployctl](https://deno.com/deploy/docs/deployctl) in the build directory:
-
-```
-deployctl deploy --project=demo --import-map=deno.json mod.ts
-```
+For Deno Deploy set the entry point to `mod.ts`.
 
 See the [GitHub Action workflow](/.github/workflows/ci.yml) for automated deployment.
+
+Using [deployctl](https://deno.com/deploy/docs/deployctl):
+
+```
+deployctl deploy --project=demo --import-map=import_map.json mod.ts
+```
 
 ## Demo App
 

@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "file_server": "https://deno.land/std@0.189.0/http/file_server.ts",
+    "server": "https://deno.land/std@0.189.0/http/server.ts",
+    "path": "https://deno.land/std@0.189.0/path/mod.ts",
+    "cookie": "npm:cookie",
+    "devalue": "npm:devalue",
+    "set-cookie-parser": "npm:set-cookie-parser"
+  }
+}

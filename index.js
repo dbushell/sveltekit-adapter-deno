@@ -21,6 +21,11 @@ export default function (opts = {}) {
 
       builder.writeServer(`${out}/server`);
 
+      const denoPath = fileURLToPath(
+        new URL('./files', import.meta.url).href
+      );
+      builder.copy(denoPath, `${out}`, {});
+
       const modPath = fileURLToPath(
         new URL('./files/mod.ts', import.meta.url).href
       );
@@ -31,16 +36,6 @@ export default function (opts = {}) {
           PRERENDERED: JSON.stringify(builder.prerendered.paths)
         }
       });
-
-      const denoPath = fileURLToPath(
-        new URL('./files/deno.json', import.meta.url).href
-      );
-      builder.copy(denoPath, `${out}/deno.json`, {});
-
-      const serverPath = fileURLToPath(
-        new URL('./files/server.js', import.meta.url).href
-      );
-      builder.copy(serverPath, `${out}/server.js`, {});
 
       if (denoDeploy) {
         try {
