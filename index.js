@@ -1,4 +1,3 @@
-import {readFileSync, writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 
@@ -25,17 +24,6 @@ export default function (opts = {}) {
       const denoPath = fileURLToPath(new URL('./files', import.meta.url).href);
       builder.copy(denoPath, `${out}`, {});
 
-      const importMap = JSON.parse(
-        readFileSync(
-          fileURLToPath(
-            new URL('./files/import_map.json', import.meta.url).href
-          ),
-          'utf8'
-        )
-      );
-      importMap.imports = {...imports, ...importMap.imports};
-      writeFileSync(`${out}/import_map.json`, JSON.stringify(importMap, 0, 2));
-
       const modPath = fileURLToPath(
         new URL('./files/mod.ts', import.meta.url).href
       );
@@ -55,8 +43,7 @@ export default function (opts = {}) {
           format: 'esm',
           target: 'esnext',
           platform: 'node',
-          allowOverwrite: true,
-          external: Object.keys(importMap.imports)
+          allowOverwrite: true
         });
       } catch (err) {
         console.error(err);
