@@ -3,7 +3,7 @@ import './ambient.js';
 
 interface AdapterOptions {
   out?: string;
-  denoDeploy?: Boolean;
+  imports?: Record<string, string>;
 }
 
 export default function plugin(options?: AdapterOptions): Adapter;

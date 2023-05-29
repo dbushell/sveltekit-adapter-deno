@@ -12,8 +12,6 @@ npm install --save-dev sveltekit-adapter-deno
 
 Add the adapter to your [SvelteKit configuration](https://kit.svelte.dev/docs/configuration).
 
-👉 Set `denoDeploy` to `true` if you're deploying to **Deno Deploy**.
-
 ```js
 // svelte.config.js
 import adapter from 'sveltekit-adapter-deno';
@@ -21,9 +19,7 @@ import adapter from 'sveltekit-adapter-deno';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   kit: {
-    adapter: adapter({
-      denoDeploy: true
-    })
+    adapter: adapter()
   }
 };
 
@@ -46,6 +42,22 @@ Using [deployctl](https://deno.com/deploy/docs/deployctl):
 
 ```
 deployctl deploy --project=demo --import-map=import_map.json mod.ts
+```
+
+## Node and NPM modules
+
+Import Node modules in server routes with the `node:` prefix:
+
+```js
+import * as fs from 'node:fs';
+import {Buffer} from 'node:buffer';
+```
+
+Import NPM modules as if coding for Node:
+
+```js
+import slugify from '@sindresorhus/slugify';
+console.log(slugify('I ♥ Deno'));
 ```
 
 ## Demo App

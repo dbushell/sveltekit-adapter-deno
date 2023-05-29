@@ -1,9 +1,10 @@
+import {readFileSync, writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 
 /** @type {import('.').default} */
 export default function (opts = {}) {
-  const {out = 'build', denoDeploy = false} = opts;
+  const {out = 'build', imports = {}} = opts;
 
   return {
     name: 'deno-deploy-adapter',
@@ -21,10 +22,19 @@ export default function (opts = {}) {
 
       builder.writeServer(`${out}/server`);
 
-      const denoPath = fileURLToPath(
-        new URL('./files', import.meta.url).href
-      );
+      const denoPath = fileURLToPath(new URL('./files', import.meta.url).href);
       builder.copy(denoPath, `${out}`, {});
+
+      const importMap = JSON.parse(
+        readFileSync(
+          fileURLToPath(
+            new URL('./files/import_map.json', import.meta.url).href
+          ),
+          'utf8'
+        )
+      );
+      importMap.imports = {...imports, ...importMap.imports};
+      writeFileSync(`${out}/import_map.json`, JSON.stringify(importMap, 0, 2));
 
       const modPath = fileURLToPath(
         new URL('./files/mod.ts', import.meta.url).href
@@ -37,22 +47,22 @@ export default function (opts = {}) {
         }
       });
 
-      if (denoDeploy) {
-        try {
-          await build({
-            entryPoints: [`${out}/server.js`],
-            outfile: `${out}/server.js`,
-            bundle: true,
-            format: 'esm',
-            target: 'esnext',
-            allowOverwrite: true
-          });
-        } catch (err) {
-          console.error(err);
-          process.exit(1);
-        } finally {
-          builder.rimraf(`${out}/server`);
-        }
+      try {
+        await build({
+          entryPoints: [`${out}/server.js`],
+          outfile: `${out}/server.js`,
+          bundle: true,
+          format: 'esm',
+          target: 'esnext',
+          platform: 'node',
+          allowOverwrite: true,
+          external: Object.keys(importMap.imports)
+        });
+      } catch (err) {
+        console.error(err);
+        process.exit(1);
+      } finally {
+        builder.rimraf(`${out}/server`);
       }
     }
   };
