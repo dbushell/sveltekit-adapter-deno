@@ -1,5 +1,4 @@
 import {Adapter} from '@sveltejs/kit';
-import './ambient.js';
 
 interface AdapterOptions {
   out?: string;

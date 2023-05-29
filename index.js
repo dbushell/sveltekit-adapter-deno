@@ -3,7 +3,7 @@ import {build} from 'esbuild';
 
 /** @type {import('.').default} */
 export default function (opts = {}) {
-  const {out = 'build', imports = {}} = opts;
+  const {out = 'build'} = opts;
 
   return {
     name: 'deno-deploy-adapter',
