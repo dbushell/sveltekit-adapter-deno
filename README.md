@@ -44,6 +44,10 @@ Using [deployctl](https://deno.com/deploy/docs/deployctl):
 deployctl deploy --project=demo --import-map=import_map.json mod.ts
 ```
 
+## Adapter options
+
+See the [TypeScript definition](/index.d.ts) for `AdapterOptions`. You can specify the build output directory and provide additional esbuild options.
+
 ## Node and NPM modules
 
 Import Node modules in server routes with the `node:` prefix:

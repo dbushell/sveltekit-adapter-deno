@@ -3,7 +3,7 @@ import {build} from 'esbuild';
 
 /** @type {import('.').default} */
 export default function (opts = {}) {
-  const {out = 'build'} = opts;
+  const {out = 'build', buildOptions = {}} = opts;
 
   return {
     name: 'deno-deploy-adapter',
@@ -35,15 +35,28 @@ export default function (opts = {}) {
         }
       });
 
+      const defaultOptions = {
+        entryPoints: [`${out}/server.js`],
+        outfile: `${out}/server.js`,
+        bundle: true,
+        format: 'esm',
+        target: 'esnext',
+        platform: 'node',
+        allowOverwrite: true
+      };
+
+      for (const key of Object.keys(buildOptions)) {
+        if (Object.hasOwn(defaultOptions, key)) {
+          console.warn(
+            `Warning: "buildOptions" has override for default "${key}" this may break deployment.`
+          );
+        }
+      }
+
       try {
         await build({
-          entryPoints: [`${out}/server.js`],
-          outfile: `${out}/server.js`,
-          bundle: true,
-          format: 'esm',
-          target: 'esnext',
-          platform: 'node',
-          allowOverwrite: true
+          ...defaultOptions,
+          ...buildOptions
         });
       } catch (err) {
         console.error(err);
