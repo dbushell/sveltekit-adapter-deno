@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-adapter-deno",
-  "version": "0.10.2",
+  "version": "0.11.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/dbushell/sveltekit-adapter-deno"
@@ -24,10 +24,10 @@
     "package.json"
   ],
   "dependencies": {
-    "esbuild": "^0.18.13"
+    "esbuild": "^0.18.17"
   },
   "devDependencies": {
-    "@sveltejs/kit": "^1.22.3"
+    "@sveltejs/kit": "^1.22.4"
   },
   "peerDependencies": {
     "@sveltejs/kit": "^1.0.0"
