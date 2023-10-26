@@ -27,7 +27,7 @@
     "esbuild": "^0.19.5"
   },
   "devDependencies": {
-    "@sveltejs/kit": "^1.25.2"
+    "@sveltejs/kit": "^1.27.1"
   },
   "peerDependencies": {
     "@sveltejs/kit": "^1.0.0"
