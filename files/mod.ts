@@ -8,7 +8,7 @@ const initialized = server.init({env: Deno.env.toObject()});
 const prerendered: Set<string> = new Set(PRERENDERED);
 
 const appDir = 'APP_DIR';
-const baseDir = dirname(new URL(import.meta.url).pathname);
+const baseDir = dirname(Deno.execPath());
 const rootDir = join(baseDir, 'static');
 
 Deno.serve(
