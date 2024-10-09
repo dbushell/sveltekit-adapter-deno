@@ -1,9 +1,14 @@
-import {fileURLToPath} from 'node:url';
-import {build} from 'esbuild';
+import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
+
+const usageOptions = {
+  deno: "deno",
+  compile: "deno-compile"
+}
 
 /** @type {import('.').default} */
 export default function (opts = {}) {
-  const {out = 'build', buildOptions = {}} = opts;
+  const { out = 'build', buildOptions = {}, usage = usageOptions.deno } = opts;
 
   return {
     name: 'deno-deploy-adapter',
@@ -31,7 +36,8 @@ export default function (opts = {}) {
         replace: {
           SERVER: './server.js',
           APP_DIR: builder.getAppPath(),
-          PRERENDERED: JSON.stringify(builder.prerendered.paths)
+          PRERENDERED: JSON.stringify(builder.prerendered.paths),
+          CURRENT_DIRNAME: usage === usageOptions.deno ? "new URL(import.meta.url).pathname" : "Deno.execPath()"
         }
       });
 

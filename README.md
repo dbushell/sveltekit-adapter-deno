@@ -48,6 +48,9 @@ deployctl deploy --project=demo --import-map=import_map.json mod.ts
 
 See the [TypeScript definition](/index.d.ts) for `AdapterOptions`. You can specify the build output directory and provide additional esbuild options.
 
+The `usage` option is used to determine where the current directory is (this is needed for the static and prerendered files). The default is `usage: 'deno'` which uses the `import.meta.url` to get the current directory.
+If you want to compile the result with `deno compile` you should use `usage: 'deno-compile'` which uses `Deno.execPath()` to get the current directory.
+
 ## Node and NPM modules
 
 Import Node modules in server routes with the `node:` prefix:
