@@ -13,9 +13,9 @@ const env = safeEnv({
 
 const prerendered: Set<string> = new Set(PRERENDERED);
 
-const appDir = "APP_DIR";
+const appDir = 'APP_DIR';
 const baseDir = dirname(CURRENT_DIRNAME);
-const rootDir = join(baseDir, "static");
+const rootDir = join(baseDir, 'static');
 
 Deno.serve(
   {
