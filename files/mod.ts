@@ -8,7 +8,7 @@ const initialized = server.init({ env: Deno.env.toObject() });
 
 const env = safeEnv({
   PORT: number({ defaultValue: 8000 }),
-  HOST: string({ defaultValue: "localhost" }),
+  HOST: string({ defaultValue: "127.0.0.1" }),
 });
 
 const prerendered: Set<string> = new Set(PRERENDERED);
