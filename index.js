@@ -1,20 +1,20 @@
-import { fileURLToPath } from 'node:url';
-import { build } from 'esbuild';
+import { fileURLToPath } from "node:url";
+import { build } from "esbuild";
 
 const usageOptions = {
   deno: "deno",
-  compile: "deno-compile"
-}
+  compile: "deno-compile",
+};
 
 /** @type {import('.').default} */
 export default function (opts = {}) {
-  const { out = 'build', buildOptions = {}, usage = usageOptions.deno } = opts;
+  const { out = "build", buildOptions = {}, usage = usageOptions.deno } = opts;
 
   return {
-    name: 'deno-deploy-adapter',
+    name: "deno-deploy-adapter",
 
     async adapt(builder) {
-      const tmp = builder.getBuildDirectory('deno-deploy-adapter');
+      const tmp = builder.getBuildDirectory("deno-deploy-adapter");
 
       builder.rimraf(out);
       builder.rimraf(tmp);
@@ -26,35 +26,37 @@ export default function (opts = {}) {
 
       builder.writeServer(`${out}/server`);
 
-      const denoPath = fileURLToPath(new URL('./files', import.meta.url).href);
+      const denoPath = fileURLToPath(new URL("./files", import.meta.url).href);
       builder.copy(denoPath, `${out}`, {});
 
       const modPath = fileURLToPath(
-        new URL('./files/mod.ts', import.meta.url).href
+        new URL("./files/mod.ts", import.meta.url).href,
       );
       builder.copy(modPath, `${out}/mod.ts`, {
         replace: {
-          SERVER: './server.js',
+          SERVER: "./server.js",
           APP_DIR: builder.getAppPath(),
           PRERENDERED: JSON.stringify(builder.prerendered.paths),
-          CURRENT_DIRNAME: usage === usageOptions.deno ? "new URL(import.meta.url).pathname" : "Deno.execPath()"
-        }
+          CURRENT_DIRNAME: usage === usageOptions.deno
+            ? "new URL(import.meta.url).pathname"
+            : "Deno.execPath()",
+        },
       });
 
       const defaultOptions = {
         entryPoints: [`${out}/server.js`],
         outfile: `${out}/server.js`,
         bundle: true,
-        format: 'esm',
-        target: 'esnext',
-        platform: 'node',
-        allowOverwrite: true
+        format: "esm",
+        target: "esnext",
+        platform: "node",
+        allowOverwrite: true,
       };
 
       for (const key of Object.keys(buildOptions)) {
         if (Object.hasOwn(defaultOptions, key)) {
           console.warn(
-            `Warning: "buildOptions" has override for default "${key}" this may break deployment.`
+            `Warning: "buildOptions" has override for default "${key}" this may break deployment.`,
           );
         }
       }
@@ -62,7 +64,7 @@ export default function (opts = {}) {
       try {
         await build({
           ...defaultOptions,
-          ...buildOptions
+          ...buildOptions,
         });
       } catch (err) {
         console.error(err);
@@ -70,6 +72,6 @@ export default function (opts = {}) {
       } finally {
         builder.rimraf(`${out}/server`);
       }
-    }
+    },
   };
 }
