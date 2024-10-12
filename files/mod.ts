@@ -1,15 +1,9 @@
 import { serveDir, serveFile } from "file_server";
 import { dirname, extname, join } from "path";
-import { number, safeEnv, string } from "jsr:@safe-env/safe-env@0.1.7";
 
 import server from "SERVER";
 
 const initialized = server.init({ env: Deno.env.toObject() });
-
-const env = safeEnv({
-  PORT: number({ defaultValue: 8000 }),
-  HOST: string({ defaultValue: "127.0.0.1" }),
-});
 
 const prerendered: Set<string> = new Set(PRERENDERED);
 
@@ -19,13 +13,13 @@ const rootDir = join(baseDir, "static");
 
 Deno.serve(
   {
-    port: env.PORT,
-    hostname: env.HOST,
+    port: Number.parseInt(Deno.env.get("PORT") ?? "8000"),
+    hostname: Deno.env.get("HOST") ?? "0.0.0.0",
   },
   async (request: Request, info: Deno.ServeHandlerInfo): Promise<Response> => {
     // Get client IP address
-    const clientAddress = request.headers.get("x-forwarded-for") ??
-      info.remoteAddr.hostname;
+    const clientAddress =
+      request.headers.get("x-forwarded-for") ?? info.remoteAddr.hostname;
 
     const { pathname } = new URL(request.url);
 
@@ -48,7 +42,7 @@ Deno.serve(
     if (!slashed && !extname(pathname) && prerendered.has(pathname)) {
       const response = await serveFile(
         request,
-        join(rootDir, `${pathname}.html`),
+        join(rootDir, `${pathname}.html`)
       );
       if (response.ok || response.status === 304) {
         return response;
@@ -67,7 +61,7 @@ Deno.serve(
       ) {
         response.headers.set(
           "cache-control",
-          "public, max-age=31536000, immutable",
+          "public, max-age=31536000, immutable"
         );
       }
       return response;
@@ -79,5 +73,5 @@ Deno.serve(
     return server.respond(request, {
       getClientAddress: () => clientAddress,
     });
-  },
+  }
 );
