@@ -14,7 +14,7 @@ const rootDir = join(baseDir, "static");
 Deno.serve(
   {
     port: Number.parseInt(Deno.env.get("PORT") ?? "8000"),
-    hostname: Deno.env.get("HOST") ?? "0.0.0.0",
+    hostname: Deno.env.get("HOST") ?? "127.0.0.1",
   },
   async (request: Request, info: Deno.ServeHandlerInfo): Promise<Response> => {
     // Get client IP address
