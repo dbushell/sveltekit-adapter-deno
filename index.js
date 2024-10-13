@@ -38,7 +38,7 @@ export default function (opts = {}) {
           APP_DIR: builder.getAppPath(),
           PRERENDERED: JSON.stringify(builder.prerendered.paths),
           CURRENT_DIRNAME: usage === usageOptions.deno
-            ? "new URL(import.meta.url).pathname"
+            ? "new URL(fromFileUrl(import.meta.url)).pathname"
             : "Deno.execPath()",
         },
       });
