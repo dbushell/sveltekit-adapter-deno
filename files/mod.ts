@@ -1,5 +1,5 @@
 import { serveDir, serveFile } from "file_server";
-import { dirname, extname, join } from "path";
+import { dirname, extname, join, fromFileUrl } from "path";
 
 import server from "SERVER";
 
