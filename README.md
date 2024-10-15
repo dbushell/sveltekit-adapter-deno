@@ -45,9 +45,19 @@ deployment.
 
 Using [deployctl](https://deno.com/deploy/docs/deployctl):
 
-```
+```sh
 deployctl deploy --project=demo --import-map=import_map.json mod.ts
 ```
+
+### Change the port or hostname
+
+The following environment variables can be used to change the port and hostname:
+
+```sh
+PORT=5678 HOST=0.0.0.0 deno run --allow-env --allow-read --allow-net mod.ts
+```
+
+The default port is `8000` and the default hostname is `127.0.0.1`.
 
 ## Adapter options
 
