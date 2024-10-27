@@ -1,5 +1,15 @@
 # sveltekit-adapter-deno
 
+⚠️ This project is no longer maintained! ⚠️
+
+Deno is now mostly compatible with SvelteKit and the [official adapters](https://svelte.dev/docs/kit/adapters) should be preferred.
+
+This adapter still works for Deno and Deno Deploy but I no longer use nor maintain it.
+
+I would **not** recommend Deno Deploy for website hosting due to unresolved [isolate start-up time issues](https://github.com/denoland/deploy_feedback/issues/505) and increased latency due to the [reduction in regions](https://www.reddit.com/r/Deno/comments/19f5xg7/deno_deploy_dropped_from_35_regions_to_just_12/).
+
+* * *
+
 [Adapter](https://kit.svelte.dev/docs/adapters) for
 [SvelteKit](https://kit.svelte.dev/) apps that generates a standalone
 [Deno](https://deno.com/runtime) or [Deno Deploy](https://deno.com/deploy)

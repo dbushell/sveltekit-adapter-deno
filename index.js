@@ -71,6 +71,12 @@ export default function (opts = {}) {
         process.exit(1);
       } finally {
         builder.rimraf(`${out}/server`);
+        console.warn(`
+PLEASE NOTE: This adapter is no longer maintained.
+Deno is now compatible with the official Node adapters:
+https://svelte.dev/docs/kit/adapters
+Use adapter v0.16.0 to hide this message.
+`);
       }
     },
   };
